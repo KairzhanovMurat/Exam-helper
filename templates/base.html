@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body style="background-color: cadetblue">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'main:subjects' %}">Subjects</a>
+ <a class="navbar-brand" href="{% url 'main:create_question' %}">Add question</a>
+    <a class="navbar-brand" href="{% url 'main:create_answer' %}">Add answer</a>
+<form class="form-inline my-2 my-lg-0" method="get" action="{% url 'main:search' %}" >
+      <input class="form-control mr-sm-2" type="search" name="quest_name"  aria-label="Search">
+      <button class="btn btn-info my-2 my-sm-0" type="submit">Search for question</button>
+    </form>
+</nav>
+<div class="container">
+    <br>
+{% block content %}
+{% endblock %}
+</div>
+</body>
+</html>
+

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="add answer" class="btn btn-success">
+    </form>
+    <br>
+  {% for answer in Question.answers.all %}
+<div class="list-group">
+  <p class="list-group-item list-group-item-action">{{ answer.ans_name }} </p>
+</div>
+      <a href="{% url 'main:del_ans' pk=answer.pk %}" class="btn btn-danger">Delete</a>
+      <a href="{% url 'main:edit_ans' pk=answer.pk %}" class="btn btn-warning">Edit</a>
+  {% empty %}
+    <h2>No answers yet</h2>
+    {% endfor %}
+
+{% endblock %}

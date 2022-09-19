@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="add subject" class="btn btn-success">
+    </form>
+    <br>
+
+  {% for subject in subjects %}
+<div class="list-group">
+  <a href="{% url 'main:questions' pk=subject.pk %}" class="list-group-item list-group-item-action">{{ subject.subj_name}} <span class="pull-right"></span></a>
+</div>
+      <a href="{% url 'main:del_subj' pk=subject.pk %}" class="btn btn-danger">Delete</a>
+      <a href="{% url 'main:edit_subj' pk=subject.pk %}" class="btn btn-warning">Edit</a>
+  {% empty %}
+    <h2>No subjects yet</h2>
+    {% endfor %}
+
+{% endblock %}

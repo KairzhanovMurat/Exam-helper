@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 style="text-align: center">{{ Subject.subj_name | title}}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.quest_name }}
+        <input type="submit" value="add question" class="btn btn-success">
+    </form>
+    <br>
+  {% for question in Subject.questions.all %}
+<div class="list-group">
+  <a href="{% url 'main:answers' pk=question.pk %}" class="list-group-item list-group-item-action">{{ question.quest_name}}</a>
+      </div>
+      <a href="{% url 'main:del_quest' pk=question.pk %}" class="btn btn-danger">Delete</a>
+      <a href="{% url 'main:edit_quest' pk=question.pk %}" class="btn btn-warning">Edit</a>
+  {% empty %}
+    <h2>No questions yet</h2>
+    {% endfor %}
+
+
+{% endblock %}

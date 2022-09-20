@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="{% url  'main:questions' pk=Question.related_subject.pk%}" class="btn btn-primary">Back to question</a>
 <h2 style="text-align: center">{{ Question | title }}</h2>
     <form action="" method="post">
         {% csrf_token %}

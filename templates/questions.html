@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <a href="{% url  'main:subjects' %}" class="btn btn-primary">Back to subjects</a>
     <h1 style="text-align: center">{{ Subject.subj_name | title}}</h1>
     <form action="" method="post">
         {% csrf_token %}

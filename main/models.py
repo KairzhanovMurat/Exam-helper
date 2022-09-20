@@ -5,7 +5,7 @@ from django.db import models
 
 class Subject(models.Model):
 
-    subj_name = models.CharField(max_length=100)
+    subj_name = models.CharField(max_length=100,unique=True)
 
     def __str__(self):
         return self.subj_name
@@ -13,7 +13,7 @@ class Subject(models.Model):
 
 class Question(models.Model):
 
-    quest_name = models.CharField(max_length=200)
+    quest_name = models.CharField(max_length=200,unique=True)
     related_subject = models.ForeignKey(Subject,on_delete=models.CASCADE,related_name='questions')
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
 
-    ans_name = models.CharField(max_length=300)
+    ans_name = models.CharField(max_length=300,unique=True)
     related_question = models.ForeignKey(Question,on_delete=models.CASCADE,related_name='answers')
 
     def __str__(self):

@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, reverse
 from . import models, forms
 from django.views import generic
 from django.http import HttpResponseRedirect
+from django.db import IntegrityError
+
 
 # Create your views here.
 
@@ -16,11 +18,13 @@ class Subjects(generic.ListView):
         ctxt['form'] = forms.SubjectForm()
         return ctxt
 
-    @staticmethod
-    def post(request):
-        new_subj = models.Subject(subj_name=request.POST.get('subj_name'))
-        new_subj.save()
-        return redirect('/')
+    def post(self,request):
+        try:
+            new_subj = models.Subject(subj_name=self.request.POST.get('subj_name'))
+            new_subj.save()
+            return redirect('/')
+        except IntegrityError:
+            return render(self.request,'no_result_page.html')
 
 
 class QuestionsOfSubj(generic.DetailView):
@@ -34,10 +38,14 @@ class QuestionsOfSubj(generic.DetailView):
         return context
 
     def post(self, request, pk):
-        new_question = models.Question(quest_name=request.POST.get('quest_name'),
-                                       related_subject=self.get_object())
-        new_question.save()
-        return redirect('main:questions', pk=pk)
+        try:
+            new_question = models.Question(
+                quest_name=request.POST.get('quest_name'),
+                related_subject=self.get_object())
+            new_question.save()
+            return redirect('main:questions', pk=pk)
+        except IntegrityError:
+            return render(self.request, 'no_result_page.html')
 
 
 class AnswersOfQuestion(generic.DetailView):
@@ -52,11 +60,14 @@ class AnswersOfQuestion(generic.DetailView):
         return context
 
     def post(self, request, pk):
-        new_answer = models.Answer(
-            related_question=self.get_object(),
-            ans_name=request.POST.get('ans_name'))
-        new_answer.save()
-        return redirect('main:answers', pk=pk)
+        try:
+            new_answer = models.Answer(
+                related_question=self.get_object(),
+                ans_name=request.POST.get('ans_name'))
+            new_answer.save()
+            return redirect('main:answers', pk=pk)
+        except IntegrityError:
+            return render(self.request, 'no_result_page.html')
 
 
 class CreateQuestion(generic.CreateView):

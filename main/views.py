@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, reverse
-from . import models, forms
-from django.views import generic
-from django.http import HttpResponseRedirect
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
+from django.views import generic
+
+from . import models, forms
 
 
 # Create your views here.
@@ -18,13 +19,13 @@ class Subjects(generic.ListView):
         ctxt['form'] = forms.SubjectForm()
         return ctxt
 
-    def post(self,request):
+    def post(self, request):
         try:
             new_subj = models.Subject(subj_name=self.request.POST.get('subj_name'))
             new_subj.save()
             return redirect('/')
         except IntegrityError:
-            return render(self.request,'no_result_page.html')
+            return render(self.request, 'no_result_page.html')
 
 
 class QuestionsOfSubj(generic.DetailView):
@@ -49,7 +50,6 @@ class QuestionsOfSubj(generic.DetailView):
 
 
 class AnswersOfQuestion(generic.DetailView):
-
     template_name = 'answer.html'
     model = models.Question
     context_object_name = 'Question'
@@ -71,7 +71,6 @@ class AnswersOfQuestion(generic.DetailView):
 
 
 class CreateQuestion(generic.CreateView):
-
     model = models.Question
     fields = '__all__'
     template_name = 'question_Create.html'
@@ -81,7 +80,6 @@ class CreateQuestion(generic.CreateView):
 
 
 class CreateAnswer(generic.CreateView):
-
     model = models.Answer
     fields = '__all__'
     template_name = 'answer_create.html'
@@ -91,7 +89,6 @@ class CreateAnswer(generic.CreateView):
 
 
 class EditAnswer(generic.UpdateView):
-
     template_name = 'editAns.html'
     model = models.Answer
     fields = '__all__'
@@ -101,7 +98,6 @@ class EditAnswer(generic.UpdateView):
 
 
 class EditQuestion(generic.UpdateView):
-
     template_name = 'edit_quest.html'
     model = models.Question
     fields = '__all__'
@@ -111,7 +107,6 @@ class EditQuestion(generic.UpdateView):
 
 
 class EditSubject(generic.UpdateView):
-
     template_name = 'edit_subj.html'
     model = models.Subject
     fields = '__all__'
@@ -119,7 +114,6 @@ class EditSubject(generic.UpdateView):
 
 
 class DeleteQuestion(generic.DeleteView):
-
     template_name = 'del_quest.html'
     model = models.Question
 
@@ -128,7 +122,6 @@ class DeleteQuestion(generic.DeleteView):
 
 
 class DeleteSubject(generic.DeleteView):
-
     template_name = 'del_subj.html'
     model = models.Subject
     success_url = '/'
@@ -144,8 +137,7 @@ def search(request):
     search_input = request.GET.get('quest_name') or ''
     if search_input:
         try:
-            queryset = models.Question.objects.filter(quest_name__iexact=search_input)
-            return redirect('main:answers', pk=queryset.first().pk)
+            queryset = models.Question.objects.filter(quest_name__icontains=search_input)
+            return render(request, 'search_res.html', context={'qs': queryset})
         except AttributeError:
             return render(request, 'no_result_page.html')
-

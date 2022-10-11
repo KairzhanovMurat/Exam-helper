@@ -1,23 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <a href="{% url  'main:subjects' %}" class="btn btn-primary">Back to subjects</a>
-    <h1 style="text-align: center">{{ Subject.subj_name | title}}</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.quest_name }}
-        <input type="submit" value="add question" class="btn btn-success">
-    </form>
     <br>
-  {% for question in Subject.questions.all %}
+  {% for question in qs %}
 <div class="list-group">
   <a href="{% url 'main:answers' pk=question.pk %}" class="list-group-item list-group-item-action">{{ question.quest_name}}</a>
       </div>
       <p class="list-group-item list-group-item-action" style="background-color: darkgray">Last updated answer: {{ question.answers.last }}</p>
       <a href="{% url 'main:del_quest' pk=question.pk %}" class="btn btn-danger">Delete</a>
       <a href="{% url 'main:edit_quest' pk=question.pk %}" class="btn btn-warning">Edit</a>
-  {% empty %}
-    <h2>No questions yet</h2>
     {% endfor %}
-
-
 {% endblock %}
